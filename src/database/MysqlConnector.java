@@ -1,5 +1,6 @@
-package dbaccess;
+package database;
 
+import javax.swing.*;
 import java.sql.*;
 
 /**
@@ -18,10 +19,12 @@ public class MysqlConnector {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             connection = DriverManager.getConnection("jdbc:mysql://" + p_ip_address + "/" + p_db_name + "?user=" + p_db_username + "&password=" + p_db_password);
             System.out.println("Connecting to mysql server...");
+            JOptionPane.showMessageDialog(null, "Connecting to mysql server...");
             statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             set_dbType("MySql");
         } catch (InstantiationException | ClassNotFoundException | IllegalAccessException | SQLException exception) {
             System.out.println("Could not connect to " + p_ip_address + " " + exception.getMessage());
+            JOptionPane.showMessageDialog(null, "Could not connect to " + p_ip_address + " " + exception.getMessage());
             exception.printStackTrace();
         }
     }
