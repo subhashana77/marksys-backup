@@ -11,19 +11,23 @@ public class Backup_Table {
     private String table_name;
     private String backuped_file_path;
     private String backuped_date_time;
-    private String from_date;
-    private String to_date;
+    private String first_col_name;
+    private String second_col_name;
 
     public Backup_Table() {
     }
 
-    public Backup_Table(int table_id, String table_name, String backuped_file_path, String backuped_date_time, String from_date, String to_date) {
+    public Backup_Table(String table_name) {
+        this.table_name = table_name;
+    }
+
+    public Backup_Table(int table_id, String table_name, String backuped_file_path, String backuped_date_time, String first_col_name, String second_col_name) {
         this.table_id = table_id;
         this.table_name = table_name;
         this.backuped_file_path = backuped_file_path;
         this.backuped_date_time = backuped_date_time;
-        this.from_date = from_date;
-        this.to_date = to_date;
+        this.first_col_name = first_col_name;
+        this.second_col_name = second_col_name;
     }
 
     public int getTable_id() {
@@ -58,20 +62,20 @@ public class Backup_Table {
         this.backuped_date_time = backuped_date_time;
     }
 
-    public String getFrom_date() {
-        return from_date;
+    public String getFirst_col_name() {
+        return first_col_name;
     }
 
-    public void setFrom_date(String from_date) {
-        this.from_date = from_date;
+    public void setFirst_col_name(String first_col_name) {
+        this.first_col_name = first_col_name;
     }
 
-    public String getTo_date() {
-        return to_date;
+    public String getSecond_col_name() {
+        return second_col_name;
     }
 
-    public void setTo_date(String to_date) {
-        this.to_date = to_date;
+    public void setSecond_col_name(String second_col_name) {
+        this.second_col_name = second_col_name;
     }
 
     @Override
@@ -81,8 +85,8 @@ public class Backup_Table {
                 ", table_name='" + table_name + '\'' +
                 ", backuped_file_path='" + backuped_file_path + '\'' +
                 ", backuped_date_time='" + backuped_date_time + '\'' +
-                ", from_date='" + from_date + '\'' +
-                ", to_date='" + to_date + '\'' +
+                ", first_col_name='" + first_col_name + '\'' +
+                ", second_col_name='" + second_col_name + '\'' +
                 '}';
     }
 }
