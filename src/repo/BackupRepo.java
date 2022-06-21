@@ -1,8 +1,8 @@
 package repo;
 
-import model.Backup_Table;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author dilshan.r
@@ -12,5 +12,6 @@ import java.util.ArrayList;
  */
 public interface BackupRepo {
     public ArrayList<String> checkTableExistingEmptyCol();
-    public void createDateFilter();
+    public HashMap<String, LocalDate> createDateFilter();
+    public void backupDatabase();
 }

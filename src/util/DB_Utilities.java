@@ -26,13 +26,13 @@ public class DB_Utilities {
 
     MysqlConnector mysqlConnector = new MysqlConnector(_db_host, _db_name, _db_username, _db_password);
 
-    public void logReportFunction(String category, String description, String server_ip, String location_code) {
+    public void logReportFunction(String category, String description, String server_ip, String table_name) {
         //        need to insert oracle transaction (start transaction)
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String insertQuery = "" +
-                    "INSERT INTO report_log (log_date, timestamp, category, description, server_ip, location_code) " +
-                    "VALUES (SYSDATE, CURRENT_TIMESTAMP, '"+category+"', '"+description+"', '"+server_ip+"', '"+location_code+"')";
+                    "INSERT INTO report_log (log_date, timestamp, category, description, server_ip, table_name) " +
+                    "VALUES (SYSDATE, CURRENT_TIMESTAMP, '"+category+"', '"+description+"', '"+server_ip+"', '"+table_name+"')";
             if (statement.executeUpdate(insertQuery) <= 0) {
                 System.out.println("Something went wrong. Data cannot update to report log!");
                 JOptionPane.showMessageDialog(null, "Something went wrong. Data cannot update to report log!");
@@ -98,7 +98,7 @@ public class DB_Utilities {
                     "mysql",
                     "ERROR - parameter fetching fail!",
                     null,
-                    null
+                    "parameters"
             );
             JOptionPane.showMessageDialog(null,"ERROR - parameter fetching fail!");
         }
