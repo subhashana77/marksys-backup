@@ -23,7 +23,10 @@ public class MysqlConnector {
             set_dbType("MySql");
         } catch (InstantiationException | ClassNotFoundException | IllegalAccessException | SQLException exception) {
             System.out.println("Could not connect to " + p_ip_address + " " + exception.getMessage());
-            JOptionPane.showMessageDialog(null, "Could not connect to " + p_ip_address + " " + exception.getMessage());
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Could not connect to " + p_ip_address + " " + exception.getMessage()
+            );
             exception.printStackTrace();
         }
     }

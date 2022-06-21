@@ -11,7 +11,11 @@ import java.util.HashMap;
  * @ide IntelliJ IDEA
  */
 public interface BackupRepo {
-    public ArrayList<String> checkTableExistingEmptyCol();
+    public ArrayList<String> checkBothEmptyTable();
+    public ArrayList<String> checkBothNotEmptyTable();
+    public ArrayList<String> checkTDEmptyTable();
+    public ArrayList<String> checkCDEmptyTable();
     public HashMap<String, LocalDate> createDateFilter();
     public boolean backupDatabase();
+    public void dropTheTables();
 }
