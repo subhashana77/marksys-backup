@@ -11,6 +11,6 @@ import impl.BackupRepoImpl;
 public class Main {
     public static void main(String[] args) {
         BackupRepoImpl backupRepo = new BackupRepoImpl();
-        backupRepo.createDateFilter();
+        backupRepo.backupDatabase();
     }
 }

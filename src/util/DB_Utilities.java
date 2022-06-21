@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,10 +30,11 @@ public class DB_Utilities {
     public void logReportFunction(String category, String description, String server_ip, String table_name) {
         //        need to insert oracle transaction (start transaction)
         try {
+            LocalDate today = LocalDate.now(); // 2022-06-21
             Statement statement = mysqlConnector.getConnection().createStatement();
             String insertQuery = "" +
                     "INSERT INTO report_log (log_date, timestamp, category, description, server_ip, table_name) " +
-                    "VALUES (SYSDATE, CURRENT_TIMESTAMP, '"+category+"', '"+description+"', '"+server_ip+"', '"+table_name+"')";
+                    "VALUES ('"+today.toString()+"', CURRENT_TIMESTAMP, '"+category+"', '"+description+"', '"+server_ip+"', '"+table_name+"')";
             if (statement.executeUpdate(insertQuery) <= 0) {
                 System.out.println("Something went wrong. Data cannot update to report log!");
                 JOptionPane.showMessageDialog(null, "Something went wrong. Data cannot update to report log!");
@@ -72,7 +74,7 @@ public class DB_Utilities {
             System.out.println("ERROR - table name fetching fail!");
             utilities.logReportFunction(
                     "mysql",
-                    "ERROR - table name fetching fail!",
+                    "ERROR - table name fetching fail! \n" + exception,
                     null,
                     null
             );
@@ -96,12 +98,63 @@ public class DB_Utilities {
         } catch (SQLException exception) {
             utilities.logReportFunction(
                     "mysql",
-                    "ERROR - parameter fetching fail!",
+                    "ERROR - backup year parameter fetching fail! \n" + exception,
                     null,
                     "parameters"
             );
             JOptionPane.showMessageDialog(null,"ERROR - parameter fetching fail!");
         }
         return parameter;
+    }
+
+    public HashMap<String, String> getDatabaseDetails() {
+        DB_Utilities utilities = new DB_Utilities();
+        HashMap<String, String> dbStuff = new HashMap<>();
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String selectQuery = "SELECT db_name, db_username, db_password FROM parameters";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+            while (resultSet.next()) {
+                dbStuff.put("_database_name", resultSet.getString("db_name"));
+                dbStuff.put("_database_username", resultSet.getString("db_username"));
+                dbStuff.put("_database_password", resultSet.getString("db_password"));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - database stuff parameter fetching fail! \n" + exception,
+                    null,
+                    "parameters"
+            );
+            JOptionPane.showMessageDialog(null,"ERROR - parameter fetching fail!");
+        }
+        return dbStuff;
+    }
+
+    public HashMap<String, String> getBackupFileDetails() {
+        DB_Utilities utilities = new DB_Utilities();
+        HashMap<String, String> fileDetails = new HashMap<>();
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String selectQuery = "SELECT backup_file_path, backup_file_name FROM parameters";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+            while (resultSet.next()) {
+                fileDetails.put("_file_path", resultSet.getString("backup_file_path"));
+                fileDetails.put("_file_name", resultSet.getString("backup_file_name"));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - file path parameter fetching fail! \n" + exception,
+                    null,
+                    "parameters"
+            );
+            JOptionPane.showMessageDialog(null,"ERROR - parameter fetching fail!");
+        }
+        return fileDetails;
     }
 }

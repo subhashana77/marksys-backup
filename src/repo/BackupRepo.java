@@ -13,5 +13,5 @@ import java.util.HashMap;
 public interface BackupRepo {
     public ArrayList<String> checkTableExistingEmptyCol();
     public HashMap<String, LocalDate> createDateFilter();
-    public void backupDatabase();
+    public boolean backupDatabase();
 }

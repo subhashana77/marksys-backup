@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Marksys Database Backup.iml" filepath="$PROJECT_DIR$/Marksys Database Backup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Marksys_Database_Backup.iml" filepath="$PROJECT_DIR$/Marksys_Database_Backup.iml" />
     </modules>
   </component>
 </project>
