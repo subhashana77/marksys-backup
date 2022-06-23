@@ -132,7 +132,31 @@ public class BackupRepoImpl implements BackupRepo {
         String formattedToday = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // 2022-06-21
 
         HashMap<String, String> parameters = utilities.getParameters();
-        int backupYearsCount = Integer.parseInt(parameters.get("_backup_years"));
+        int backupYearsCount = 0;
+        if (Integer.parseInt(parameters.get("_backup_years")) >= 3) {
+            backupYearsCount = Integer.parseInt(parameters.get("_backup_years"));
+        } else {
+            if (JOptionPane.showConfirmDialog(null,"You can not backup and delete data for less than 3 years. So would you like to backup and delete 3 years of data?",
+                    "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION) {
+
+                backupYearsCount = 3;
+
+                System.out.println("Data backup and delete year count was less than 3. There for set it to 3 years when user is approved.");
+                utilities.logReportFunction(
+                        "date filter",
+                        "Data backup and delete year count was less than 3. There for set it to 3 years when user is approved."
+                );
+            } else {
+                System.out.println("Data backup and delete year count was less than 3. User did not agree to set it to 3 years. Then terminate the programme.");
+                utilities.logReportFunction(
+                        "date filter",
+                        "Data backup and delete year count was less than 3. User did not agree to set it to 3 years. Then terminate the programme."
+                );
+                JOptionPane.showMessageDialog(null, "You have did not agree to backup and delete to 3 years data. Then we have to terminate the programme.");
+
+                System.exit(0);
+            }
+        }
 
         LocalDate pastDate = today.minusDays(365 * backupYearsCount);
         LocalDate firstDayOfYear = pastDate.with(firstDayOfYear()); // 2019-01-01
@@ -140,7 +164,7 @@ public class BackupRepoImpl implements BackupRepo {
 
         dateParameters.put("_today", formattedToday);
         dateParameters.put("_first_day_of_year", formattedFirstDayOfYear);
-        dateParameters.put("_backup_time_count", parameters.get("_backup_years"));
+        dateParameters.put("_backup_time_count", String.valueOf(backupYearsCount));
 
         System.out.println("between " + formattedToday + " and " + formattedFirstDayOfYear + " have to backup the database");
         utilities.logReportFunction(
