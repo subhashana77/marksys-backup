@@ -1,4 +1,4 @@
-package util;
+package repo;
 
 import model.Backup_Table;
 
@@ -12,7 +12,7 @@ import java.util.HashMap;
  * @project Marksys_Database_Backup
  * @ide IntelliJ IDEA
  */
-public interface Utility {
+public interface UtilityRepo {
     public void logReportFunction(String category, String description);
     public ArrayList<Backup_Table> checkBothEmptyTable();
     public ArrayList<Backup_Table> checkTDEmptyTable();
@@ -21,5 +21,7 @@ public interface Utility {
     public HashMap<String, String> getParameters();
     public HashMap<String, String> getDatabaseDetails();
     public HashMap<String, String> getBackupFileDetails();
-    public boolean deleteDataFromTableByTD(String tableName, LocalDate today, LocalDate firstDayOfYear);
+    public boolean deleteDataFromTableByTD(String tableName, String today, String firstDayOfYear);
+    public boolean deleteDataFromTableByCD(String tableName, String today, String firstDayOfYear);
+    public boolean deleteDataFromTableByTDNCD(String tableName, String today, String firstDayOfYear);
 }

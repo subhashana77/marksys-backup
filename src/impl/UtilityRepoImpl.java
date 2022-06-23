@@ -2,7 +2,7 @@ package impl;
 
 import database.MysqlConnector;
 import model.Backup_Table;
-import util.Utility;
+import repo.UtilityRepo;
 
 import javax.swing.*;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ import java.util.HashMap;
  * @project Marksys Database Backup
  * @ide IntelliJ IDEA
  */
-public class UtilityImpl implements Utility {
+public class UtilityRepoImpl implements UtilityRepo {
     private final String _db_username = "root";
     private final String _db_password = "root";
     private final String _db_host = "localhost";
@@ -66,7 +66,7 @@ public class UtilityImpl implements Utility {
 
     @Override
     public ArrayList<Backup_Table> checkBothEmptyTable() {
-        UtilityImpl utilities = new UtilityImpl();
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
         ArrayList<Backup_Table> backupTables = new ArrayList<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
@@ -98,13 +98,13 @@ public class UtilityImpl implements Utility {
 
     @Override
     public ArrayList<Backup_Table> checkTDEmptyTable() {
-        UtilityImpl utilities = new UtilityImpl();
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
         ArrayList<Backup_Table> backupTables = new ArrayList<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String selectQuery = "SELECT table_name " +
                     "FROM `backup_table` " +
-                    "WHERE first_col_name IS NULL AND second_col_name IS NOT NULL";
+                    "WHERE first_col_name IS NOT NULL AND second_col_name IS NULL";
             ResultSet resultSet = statement.executeQuery(selectQuery);
             while (resultSet.next()) {
                 Backup_Table backupTable = new Backup_Table(
@@ -130,13 +130,13 @@ public class UtilityImpl implements Utility {
 
     @Override
     public ArrayList<Backup_Table> checkCDEmptyTable() {
-        UtilityImpl utilities = new UtilityImpl();
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
         ArrayList<Backup_Table> backupTables = new ArrayList<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String selectQuery = "SELECT table_name " +
                     "FROM `backup_table` " +
-                    "WHERE second_col_name IS NULL AND first_col_name IS NOT NULL";
+                    "WHERE second_col_name IS NOT NULL AND first_col_name IS NULL";
             ResultSet resultSet = statement.executeQuery(selectQuery);
             while (resultSet.next()) {
                 Backup_Table backupTable = new Backup_Table(
@@ -162,7 +162,7 @@ public class UtilityImpl implements Utility {
 
     @Override
     public ArrayList<Backup_Table> checkBothNotEmptyTable() {
-        UtilityImpl utilities = new UtilityImpl();
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
         ArrayList<Backup_Table> backupTables = new ArrayList<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
@@ -194,7 +194,7 @@ public class UtilityImpl implements Utility {
 
     @Override
     public HashMap<String, String> getParameters() {
-        UtilityImpl utilities = new UtilityImpl();
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
         HashMap<String, String> parameter = new HashMap<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
@@ -220,7 +220,7 @@ public class UtilityImpl implements Utility {
 
     @Override
     public HashMap<String, String> getDatabaseDetails() {
-        UtilityImpl utilities = new UtilityImpl();
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
         HashMap<String, String> dbStuff = new HashMap<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
@@ -248,7 +248,7 @@ public class UtilityImpl implements Utility {
 
     @Override
     public HashMap<String, String> getBackupFileDetails() {
-        UtilityImpl utilities = new UtilityImpl();
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
         HashMap<String, String> fileDetails = new HashMap<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
@@ -274,12 +274,74 @@ public class UtilityImpl implements Utility {
     }
 
     @Override
-    public boolean deleteDataFromTableByTD(String tableName, LocalDate today, LocalDate firstDayOfYear) {
-        UtilityImpl utilities = new UtilityImpl();
+    public boolean deleteDataFromTableByTD(String tableName, String today, String firstDayOfYear) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
         boolean isDeleted = false;
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
-            String deleteQuery = "DELETE FROM '"+tableName+"' WHERE transaction_date BETWEEN '"+firstDayOfYear+"' AND '"+today+"'";
+            String deleteQuery = "DELETE FROM "+tableName+" " +
+                    "WHERE transaction_date " +
+                    "BETWEEN '"+firstDayOfYear+"' AND '"+today+"'";
+            int update = statement.executeUpdate(deleteQuery);
+            if (update >= 1) {
+                isDeleted = true;
+            } else {
+                isDeleted = false;
+            }
+            statement.close();
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - table data delete fail! \n" + exception
+            );
+            JOptionPane.showMessageDialog(
+                    null,
+                    "ERROR - table data delete fail!"
+            );
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public boolean deleteDataFromTableByCD(String tableName, String today, String firstDayOfYear) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
+        boolean isDeleted = false;
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String deleteQuery = "DELETE FROM "+tableName+" " +
+                    "WHERE create_date " +
+                    "BETWEEN '"+firstDayOfYear+"' AND '"+today+"'";
+            int update = statement.executeUpdate(deleteQuery);
+            if (update >= 1) {
+                isDeleted = true;
+            } else {
+                isDeleted = false;
+            }
+            statement.close();
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - table data delete fail! \n" + exception
+            );
+            JOptionPane.showMessageDialog(
+                    null,
+                    "ERROR - table data delete fail!"
+            );
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public boolean deleteDataFromTableByTDNCD(String tableName, String today, String firstDayOfYear) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
+        boolean isDeleted = false;
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String deleteQuery = "DELETE FROM "+tableName+" " +
+                    "WHERE transaction_date " +
+                    "BETWEEN '"+firstDayOfYear+"' AND '"+today+"' " +
+                    "AND create_date " +
+                    "BETWEEN '"+firstDayOfYear+"' AND '"+today+"'";
             int update = statement.executeUpdate(deleteQuery);
             if (update >= 1) {
                 isDeleted = true;
