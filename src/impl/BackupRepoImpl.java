@@ -133,6 +133,7 @@ public class BackupRepoImpl implements BackupRepo {
 
         HashMap<String, String> parameters = utilities.getParameters();
         int backupYearsCount = 0;
+
         if (Integer.parseInt(parameters.get("_backup_years")) >= 3) {
             backupYearsCount = Integer.parseInt(parameters.get("_backup_years"));
         } else {
@@ -147,10 +148,10 @@ public class BackupRepoImpl implements BackupRepo {
                         "Data backup and delete year count was less than 3. There for set it to 3 years when user is approved."
                 );
             } else {
-                System.out.println("Data backup and delete year count was less than 3. User did not agree to set it to 3 years. Then terminate the programme.");
+                System.out.println("Data backup and delete year count was less than 3. User did not agree to set it to 3 years. Then we have to terminate the programme.");
                 utilities.logReportFunction(
                         "date filter",
-                        "Data backup and delete year count was less than 3. User did not agree to set it to 3 years. Then terminate the programme."
+                        "Data backup and delete year count was less than 3. User did not agree to set it to 3 years. Then we have to terminate the programme."
                 );
                 JOptionPane.showMessageDialog(null, "You have did not agree to backup and delete to 3 years data. Then we have to terminate the programme.");
 
