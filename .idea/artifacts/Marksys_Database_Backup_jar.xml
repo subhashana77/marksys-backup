@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Marksys_Database_Backup:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Marksys_Database_Backup_jar</output-path>
+    <root id="archive" name="Marksys_Database_Backup.jar">
+      <element id="module-output" name="Marksys_Database_Backup" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Marksys_VC_File_Transfer/MarksysVersionController/dist/lib/mysql-connector-java-3.0.16-ga-bin.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

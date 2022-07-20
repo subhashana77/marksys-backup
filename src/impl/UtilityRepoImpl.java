@@ -23,6 +23,7 @@ public class UtilityRepoImpl implements UtilityRepo {
     private final String _db_password = "root";
     private final String _db_host = "localhost";
     private final String _db_name = "dilshan_marksys_backup";
+//    private final String _db_name = "marksys_new";
 
     Exception _exception = null;
 
@@ -274,14 +275,43 @@ public class UtilityRepoImpl implements UtilityRepo {
     }
 
     @Override
-    public boolean deleteDataFromTableByTD(String tableName, String today, String firstDayOfYear) {
+    public HashMap<String, String> getColumnName(String tableName) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
+        HashMap<String, String> colNames = new HashMap<>();
+
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String selectQuery = "SELECT first_col_name, second_col_name FROM backup_table WHERE table_name = '"+tableName+"'";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+            while (resultSet.next()) {
+                colNames.put("_first_col_name", resultSet.getString("first_col_name"));
+                colNames.put("_second_col_name", resultSet.getString("second_col_name"));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - file path parameter fetching fail! \n" + exception
+            );
+            JOptionPane.showMessageDialog(
+                    null,
+                    "ERROR - parameter fetching fail!"
+            );
+        }
+        return colNames;
+    }
+
+    @Override
+    public boolean deleteDataFromTableByTD(String tableName, String today, String firstDayOfYear, String columnName) {
+
         UtilityRepoImpl utilities = new UtilityRepoImpl();
         boolean isDeleted = false;
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String deleteQuery = "DELETE FROM "+tableName+" " +
-                    "WHERE transaction_date " +
-                    "BETWEEN '"+firstDayOfYear+"' AND '"+today+"'";
+                    "WHERE "+columnName+" " +
+                    "< '"+firstDayOfYear+"'";
             int update = statement.executeUpdate(deleteQuery);
             if (update >= 1) {
                 isDeleted = true;
@@ -303,14 +333,14 @@ public class UtilityRepoImpl implements UtilityRepo {
     }
 
     @Override
-    public boolean deleteDataFromTableByCD(String tableName, String today, String firstDayOfYear) {
+    public boolean deleteDataFromTableByCD(String tableName, String today, String firstDayOfYear, String columnName) {
         UtilityRepoImpl utilities = new UtilityRepoImpl();
         boolean isDeleted = false;
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String deleteQuery = "DELETE FROM "+tableName+" " +
-                    "WHERE create_date " +
-                    "BETWEEN '"+firstDayOfYear+"' AND '"+today+"'";
+                    "WHERE "+columnName+" " +
+                    "< '"+firstDayOfYear+"'";
             int update = statement.executeUpdate(deleteQuery);
             if (update >= 1) {
                 isDeleted = true;
@@ -332,16 +362,17 @@ public class UtilityRepoImpl implements UtilityRepo {
     }
 
     @Override
-    public boolean deleteDataFromTableByTDNCD(String tableName, String today, String firstDayOfYear) {
+    public boolean deleteDataFromTableByTDNCD(String tableName, String today, String firstDayOfYear, String firstColName, String secondColName) {
+
         UtilityRepoImpl utilities = new UtilityRepoImpl();
         boolean isDeleted = false;
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String deleteQuery = "DELETE FROM "+tableName+" " +
-                    "WHERE transaction_date " +
-                    "BETWEEN '"+firstDayOfYear+"' AND '"+today+"' " +
-                    "AND create_date " +
-                    "BETWEEN '"+firstDayOfYear+"' AND '"+today+"'";
+                    "WHERE "+firstColName+" " +
+                    "< '"+firstDayOfYear+"' " +
+                    "AND "+secondColName+" " +
+                    "< '"+today+"'";
             int update = statement.executeUpdate(deleteQuery);
             if (update >= 1) {
                 isDeleted = true;
@@ -360,5 +391,32 @@ public class UtilityRepoImpl implements UtilityRepo {
             );
         }
         return isDeleted;
+    }
+
+    @Override
+    public ArrayList<String> getDateList(String tableName, String columnName) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
+        ArrayList<String> dateList = new ArrayList<>();
+
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String selectQuery = "SELECT "+columnName+" FROM "+tableName+" ";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+            while (resultSet.next()) {
+                dateList.add(resultSet.getString(columnName));
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - " + columnName + " fetching fail! \n" + exception
+            );
+            JOptionPane.showMessageDialog(
+                    null,
+                    "ERROR - " + columnName + " fetching fail!"
+            );
+        }
+        return dateList;
     }
 }

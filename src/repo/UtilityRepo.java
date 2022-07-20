@@ -21,7 +21,9 @@ public interface UtilityRepo {
     public HashMap<String, String> getParameters();
     public HashMap<String, String> getDatabaseDetails();
     public HashMap<String, String> getBackupFileDetails();
-    public boolean deleteDataFromTableByTD(String tableName, String today, String firstDayOfYear);
-    public boolean deleteDataFromTableByCD(String tableName, String today, String firstDayOfYear);
-    public boolean deleteDataFromTableByTDNCD(String tableName, String today, String firstDayOfYear);
+    public HashMap<String, String> getColumnName(String tableName);
+    public boolean deleteDataFromTableByTD(String tableName, String today, String firstDayOfYear, String columnName);
+    public boolean deleteDataFromTableByCD(String tableName, String today, String firstDayOfYear, String columnName);
+    public boolean deleteDataFromTableByTDNCD(String tableName, String today, String firstDayOfYear, String firstColName, String secondColName);
+    public ArrayList<String> getDateList(String tableName, String columnName);
 }

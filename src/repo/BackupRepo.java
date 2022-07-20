@@ -16,6 +16,6 @@ public interface BackupRepo {
     public ArrayList<String> checkTDEmptyTable();
     public ArrayList<String> checkCDEmptyTable();
     public HashMap<String, String> createDateFilter();
-    public boolean backupDatabase();
+//    public boolean backupDatabase();
     public void dropTheTableData();
 }
