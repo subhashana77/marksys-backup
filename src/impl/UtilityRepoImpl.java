@@ -22,8 +22,8 @@ public class UtilityRepoImpl implements UtilityRepo {
     private final String _db_username = "root";
     private final String _db_password = "root";
     private final String _db_host = "localhost";
-    private final String _db_name = "dilshan_marksys_backup";
-//    private final String _db_name = "marksys_new";
+    //    private final String _db_name = "dilshan_marksys_backup";
+    private final String _db_name = "marksys_new";
 
     Exception _exception = null;
 
@@ -73,7 +73,10 @@ public class UtilityRepoImpl implements UtilityRepo {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String selectQuery = "SELECT table_name " +
                     "FROM `backup_table` " +
-                    "WHERE first_col_name IS NULL AND second_col_name IS NULL";
+                    "WHERE (second_col_name IS NULL AND length(trim(first_col_name))=0) " +
+                    "OR (first_col_name IS NULL AND length(trim(second_col_name))=0) " +
+                    "OR (first_col_name IS NULL AND second_col_name IS NULL) " +
+                    "OR ((length(trim(first_col_name))=0) AND (length(trim(second_col_name))=0))";
             ResultSet resultSet = statement.executeQuery(selectQuery);
             while (resultSet.next()) {
                 Backup_Table backupTable = new Backup_Table(
@@ -98,14 +101,15 @@ public class UtilityRepoImpl implements UtilityRepo {
     }
 
     @Override
-    public ArrayList<Backup_Table> checkTDEmptyTable() {
+    public ArrayList<Backup_Table> checkFirstColEmptyTable() {
         UtilityRepoImpl utilities = new UtilityRepoImpl();
         ArrayList<Backup_Table> backupTables = new ArrayList<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String selectQuery = "SELECT table_name " +
                     "FROM `backup_table` " +
-                    "WHERE first_col_name IS NOT NULL AND second_col_name IS NULL";
+                    "WHERE (first_col_name IS NOT NULL AND length(trim(first_col_name))>0) " +
+                    "AND (second_col_name IS NULL OR length(trim(second_col_name))=0)";
             ResultSet resultSet = statement.executeQuery(selectQuery);
             while (resultSet.next()) {
                 Backup_Table backupTable = new Backup_Table(
@@ -130,14 +134,15 @@ public class UtilityRepoImpl implements UtilityRepo {
     }
 
     @Override
-    public ArrayList<Backup_Table> checkCDEmptyTable() {
+    public ArrayList<Backup_Table> checkSecondColEmptyTable() {
         UtilityRepoImpl utilities = new UtilityRepoImpl();
         ArrayList<Backup_Table> backupTables = new ArrayList<>();
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String selectQuery = "SELECT table_name " +
                     "FROM `backup_table` " +
-                    "WHERE second_col_name IS NOT NULL AND first_col_name IS NULL";
+                    "WHERE (first_col_name IS NULL OR length(trim(first_col_name))=0) " +
+                    "AND (second_col_name IS NOT NULL AND length(trim(second_col_name))>0)";
             ResultSet resultSet = statement.executeQuery(selectQuery);
             while (resultSet.next()) {
                 Backup_Table backupTable = new Backup_Table(
@@ -169,7 +174,9 @@ public class UtilityRepoImpl implements UtilityRepo {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String selectQuery = "SELECT table_name " +
                     "FROM `backup_table` " +
-                    "WHERE first_col_name IS NOT NULL AND second_col_name IS NOT NULL";
+                    "WHERE (first_col_name IS NOT NULL AND length(trim(first_col_name))>0) " +
+                    "AND (second_col_name IS NOT NULL AND length(trim(second_col_name))>0)";
+
             ResultSet resultSet = statement.executeQuery(selectQuery);
             while (resultSet.next()) {
                 Backup_Table backupTable = new Backup_Table(
@@ -303,14 +310,43 @@ public class UtilityRepoImpl implements UtilityRepo {
     }
 
     @Override
-    public boolean deleteDataFromTableByTD(String tableName, String today, String firstDayOfYear, String columnName) {
+    public boolean deleteDataFromTableByFC(String tableName, String today, String firstDayOfYear, String firstColumnName) {
 
         UtilityRepoImpl utilities = new UtilityRepoImpl();
         boolean isDeleted = false;
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
             String deleteQuery = "DELETE FROM "+tableName+" " +
-                    "WHERE "+columnName+" " +
+                    "WHERE "+firstColumnName+" " +
+                    "< '"+firstDayOfYear+"'";
+            int update = statement.executeUpdate(deleteQuery);
+            if (update >= 1) {
+                isDeleted = true;
+            } else {
+                isDeleted = false;
+            }
+            statement.close();
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - table data delete fail! \n" + exception
+            );
+             JOptionPane.showMessageDialog(
+                    null,
+                    "FC- ERROR - table data delete fail!"
+            );
+        }
+        return isDeleted;
+    }
+
+    @Override
+    public boolean deleteDataFromTableBySC(String tableName, String today, String firstDayOfYear, String secondColumnName) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
+        boolean isDeleted = false;
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String deleteQuery = "DELETE FROM "+tableName+" " +
+                    "WHERE "+secondColumnName+" " +
                     "< '"+firstDayOfYear+"'";
             int update = statement.executeUpdate(deleteQuery);
             if (update >= 1) {
@@ -326,43 +362,14 @@ public class UtilityRepoImpl implements UtilityRepo {
             );
             JOptionPane.showMessageDialog(
                     null,
-                    "ERROR - table data delete fail!"
+                    "SC- ERROR - table data delete fail!"
             );
         }
         return isDeleted;
     }
 
     @Override
-    public boolean deleteDataFromTableByCD(String tableName, String today, String firstDayOfYear, String columnName) {
-        UtilityRepoImpl utilities = new UtilityRepoImpl();
-        boolean isDeleted = false;
-        try {
-            Statement statement = mysqlConnector.getConnection().createStatement();
-            String deleteQuery = "DELETE FROM "+tableName+" " +
-                    "WHERE "+columnName+" " +
-                    "< '"+firstDayOfYear+"'";
-            int update = statement.executeUpdate(deleteQuery);
-            if (update >= 1) {
-                isDeleted = true;
-            } else {
-                isDeleted = false;
-            }
-            statement.close();
-        } catch (SQLException exception) {
-            utilities.logReportFunction(
-                    "mysql",
-                    "ERROR - table data delete fail! \n" + exception
-            );
-            JOptionPane.showMessageDialog(
-                    null,
-                    "ERROR - table data delete fail!"
-            );
-        }
-        return isDeleted;
-    }
-
-    @Override
-    public boolean deleteDataFromTableByTDNCD(String tableName, String today, String firstDayOfYear, String firstColName, String secondColName) {
+    public boolean deleteDataFromTableByFCNSC(String tableName, String today, String firstDayOfYear, String firstColName, String secondColName) {
 
         UtilityRepoImpl utilities = new UtilityRepoImpl();
         boolean isDeleted = false;
@@ -387,7 +394,7 @@ public class UtilityRepoImpl implements UtilityRepo {
             );
             JOptionPane.showMessageDialog(
                     null,
-                    "ERROR - table data delete fail!"
+                    "FCnSC- ERROR - table data delete fail!"
             );
         }
         return isDeleted;

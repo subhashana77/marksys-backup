@@ -10,7 +10,6 @@ public class Backup_Table {
     private int table_id;
     private String table_name;
     private String backuped_file_path;
-    private String backuped_date_time;
     private String first_col_name;
     private String second_col_name;
 
@@ -21,11 +20,10 @@ public class Backup_Table {
         this.table_name = table_name;
     }
 
-    public Backup_Table(int table_id, String table_name, String backuped_file_path, String backuped_date_time, String first_col_name, String second_col_name) {
+    public Backup_Table(int table_id, String table_name, String backuped_file_path, String first_col_name, String second_col_name) {
         this.table_id = table_id;
         this.table_name = table_name;
         this.backuped_file_path = backuped_file_path;
-        this.backuped_date_time = backuped_date_time;
         this.first_col_name = first_col_name;
         this.second_col_name = second_col_name;
     }
@@ -54,14 +52,6 @@ public class Backup_Table {
         this.backuped_file_path = backuped_file_path;
     }
 
-    public String getBackuped_date_time() {
-        return backuped_date_time;
-    }
-
-    public void setBackuped_date_time(String backuped_date_time) {
-        this.backuped_date_time = backuped_date_time;
-    }
-
     public String getFirst_col_name() {
         return first_col_name;
     }
@@ -84,7 +74,6 @@ public class Backup_Table {
                 "table_id=" + table_id +
                 ", table_name='" + table_name + '\'' +
                 ", backuped_file_path='" + backuped_file_path + '\'' +
-                ", backuped_date_time='" + backuped_date_time + '\'' +
                 ", first_col_name='" + first_col_name + '\'' +
                 ", second_col_name='" + second_col_name + '\'' +
                 '}';
