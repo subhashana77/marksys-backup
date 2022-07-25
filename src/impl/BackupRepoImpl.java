@@ -4,12 +4,11 @@ import model.Backup_Table;
 import repo.BackupRepo;
 
 import javax.swing.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
@@ -132,6 +131,12 @@ public class BackupRepoImpl implements BackupRepo {
         LocalDate today = LocalDate.now(); // 2022-06-21
         String formattedToday = today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // 2022-06-21
 
+        LocalDateTime todayWithTime = LocalDateTime.now();
+        String formattedTodayWithTime = todayWithTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")); // 2022-06-21 12:11:58
+
+//        System.out.println(formattedToday);
+//        System.out.println(formattedTodayWithTime);
+
         HashMap<String, String> parameters = utilities.getParameters();
         int backupYearsCount = 0;
 
@@ -164,8 +169,21 @@ public class BackupRepoImpl implements BackupRepo {
         LocalDate firstDayOfYear = pastDate.with(firstDayOfYear()); // 2019-01-01
         String formattedFirstDayOfYear = firstDayOfYear.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // 2019-01-01
 
-        dateParameters.put("_today", formattedToday);
-        dateParameters.put("_first_day_of_year", formattedFirstDayOfYear);
+        LocalDateTime pastDateAndTime = todayWithTime.minusDays(365 * backupYearsCount);
+        LocalDateTime firstDayOfYearAndTime = pastDateAndTime.with(firstDayOfYear()); // 2019-01-01
+
+        LocalDateTime dateTime = firstDayOfYearAndTime.truncatedTo(ChronoUnit.DAYS);
+        String formattedFirstTimeOfYear = dateTime.format(DateTimeFormatter.ISO_TIME);
+
+//        System.out.println(formattedFirstDayOfYear + " " + formattedFirstTimeOfYear);
+
+//        dateParameters.put("_today", formattedToday);
+        dateParameters.put("_today", formattedTodayWithTime);
+
+//        dateParameters.put("_today_and_time", formattedTodayWithTime);
+//        dateParameters.put("_first_day_of_year", formattedFirstDayOfYear);
+        dateParameters.put("_first_day_of_year", formattedFirstDayOfYear + " " + formattedFirstTimeOfYear);
+//        dateParameters.put("_first_day_of_year_and_time", formattedFirstDayOfYear + " " + formattedFirstTimeOfYear);
         dateParameters.put("_backup_time_count", String.valueOf(backupYearsCount));
 
         System.out.println("between " + formattedToday + " and " + formattedFirstDayOfYear + " have to backup the database");
