@@ -179,7 +179,7 @@ public class BackupRepoImpl implements BackupRepo {
 
 //        dateParameters.put("_today", formattedToday);
         dateParameters.put("_today", formattedTodayWithTime);
-
+        
 //        dateParameters.put("_today_and_time", formattedTodayWithTime);
 //        dateParameters.put("_first_day_of_year", formattedFirstDayOfYear);
         dateParameters.put("_first_day_of_year", formattedFirstDayOfYear + " " + formattedFirstTimeOfYear);
@@ -296,31 +296,35 @@ public class BackupRepoImpl implements BackupRepo {
                 tableNameListBuffer = tableNameList.substring(0, tableNameList.length() - 2);
 
                 if (isDeleted) {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!");
                     utilities.logReportFunction(
                             "delete",
-                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!"
+//                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
                     );
 
                     alertVal += 1;
 
                 } else {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables");
                     utilities.logReportFunction(
                             "delete",
-                            "BOTH- before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables"
+//                            "BOTH- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
                     );
                 }
             }
             if (alertVal > 0) {
                 JOptionPane.showMessageDialog(
                         null,
-                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!"
+//                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
+                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
                 );
             } else {
                 JOptionPane.showMessageDialog(
                         null,
-                        "BOTH2- before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables"
+//                        "BOTH2- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
+                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
                 );
             }
         }
@@ -340,31 +344,35 @@ public class BackupRepoImpl implements BackupRepo {
                 tableNameListBuffer = tableNameList.substring(0, tableNameList.length() - 2);
 
                 if (isDeleted) {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!");
                     utilities.logReportFunction(
                             "delete",
-                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!"
+//                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
                     );
 
                     alertVal += 1;
 
                 } else {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables");
                     utilities.logReportFunction(
                             "delete",
-                            "SC- before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables"
+//                            "SC- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
                     );
                 }
             }
             if (alertVal > 0) {
                 JOptionPane.showMessageDialog(
                         null,
-                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!"
+//                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
+                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
                 );
             } else {
                 JOptionPane.showMessageDialog(
                         null,
-                        "SC2- before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables"
+//                        "SC2- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
+                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
                 );
             }
         }
@@ -388,31 +396,35 @@ public class BackupRepoImpl implements BackupRepo {
                 tableNameListBuffer = tableNameList.substring(0, tableNameList.length() - 2);
 
                 if (isDeleted) {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!");
                     utilities.logReportFunction(
                             "delete",
-                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!"
+//                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
                     );
 
                     alertVal += 1;
 
                 } else {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables");
                     utilities.logReportFunction(
                             "delete",
-                            "FC- before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables"
+//                            "FC- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
                     );
                 }
             }
             if (alertVal > 0) {
                 JOptionPane.showMessageDialog(
                         null,
-                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from " + "\u201C" + tableNameListBuffer + "\u201C" + " tables!"
+//                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
+                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
                 );
             } else {
                 JOptionPane.showMessageDialog(
                         null,
-                        "FC2- before " + dateFilter.get("_backup_time_count") + " years data not found in " + "\u201C" + tableNameListBuffer + "\u201C" + " tables"
+//                        "FC2- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
+                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
                 );
             }
         }
