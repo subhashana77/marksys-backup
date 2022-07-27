@@ -8,8 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 
@@ -134,9 +133,6 @@ public class BackupRepoImpl implements BackupRepo {
         LocalDateTime todayWithTime = LocalDateTime.now();
         String formattedTodayWithTime = todayWithTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")); // 2022-06-21 12:11:58
 
-//        System.out.println(formattedToday);
-//        System.out.println(formattedTodayWithTime);
-
         HashMap<String, String> parameters = utilities.getParameters();
         int backupYearsCount = 0;
 
@@ -175,15 +171,9 @@ public class BackupRepoImpl implements BackupRepo {
         LocalDateTime dateTime = firstDayOfYearAndTime.truncatedTo(ChronoUnit.DAYS);
         String formattedFirstTimeOfYear = dateTime.format(DateTimeFormatter.ISO_TIME);
 
-//        System.out.println(formattedFirstDayOfYear + " " + formattedFirstTimeOfYear);
-
-//        dateParameters.put("_today", formattedToday);
         dateParameters.put("_today", formattedTodayWithTime);
-        
-//        dateParameters.put("_today_and_time", formattedTodayWithTime);
-//        dateParameters.put("_first_day_of_year", formattedFirstDayOfYear);
+
         dateParameters.put("_first_day_of_year", formattedFirstDayOfYear + " " + formattedFirstTimeOfYear);
-//        dateParameters.put("_first_day_of_year_and_time", formattedFirstDayOfYear + " " + formattedFirstTimeOfYear);
         dateParameters.put("_backup_time_count", String.valueOf(backupYearsCount));
 
         System.out.println("between " + formattedToday + " and " + formattedFirstDayOfYear + " have to backup the database");
@@ -194,67 +184,6 @@ public class BackupRepoImpl implements BackupRepo {
         return dateParameters;
     }
 
-//    @Override
-//    public boolean backupDatabase() {
-//        UtilityRepoImpl utilities = new UtilityRepoImpl();
-//
-//        HashMap<String, String> databaseDetails = utilities.getDatabaseDetails();
-//        HashMap<String, String> backupFileDetails = utilities.getBackupFileDetails();
-//
-//        String path = System.getProperty("user.dir") + "\\src\\" + backupFileDetails.get("_file_path");
-//
-//        String databaseName = databaseDetails.get("_database_name");
-//        String databaseUsername = databaseDetails.get("_database_username");
-//        String databasePassword = databaseDetails.get("_database_password");
-//
-//        Process process = null;
-//
-//        String date = new SimpleDateFormat("yyyy-MMM-dd").format(new Date());
-//        path = path.replace('\\', '/');
-//        path = path + "//" + backupFileDetails.get("_file_name") + "_" + date + ".sql";
-//
-//        try {
-//            Runtime runtime = Runtime.getRuntime();
-//            process = runtime.exec( "C:/Program Files/MySQL/MySQL Server 5.5/bin/mysqldump.exe -u"
-//                            + databaseUsername + " -p" + databasePassword + " --add-drop-database -B " + databaseName + " -r" + path);
-//            int processComplete = process.waitFor();
-//            if (processComplete == 0) {
-//                System.out.println("Database backup successful!");
-//                utilities.logReportFunction(
-//                        "backup",
-//                        "Database backup successful!"
-//                );
-//                JOptionPane.showMessageDialog(
-//                        null,
-//                        "Database backup successful!"
-//                );
-//                return true;
-//            } else {
-//                System.out.println("Database backup fail!");
-//                utilities.logReportFunction(
-//                        "backup",
-//                        "ERROR - Database backup fail!"
-//                );
-//                JOptionPane.showMessageDialog(
-//                        null,
-//                        "Database backup fail!"
-//                );
-//                return false;
-//            }
-//        } catch (Exception exception) {
-//            System.out.println("Something went wrong. Database backup fail! \n" + exception);
-//            utilities.logReportFunction(
-//                    "backup",
-//                    "ERROR - Something went wrong. Database backup fail!"
-//            );
-//            JOptionPane.showMessageDialog(
-//                    null,
-//                    "Something went wrong. Database backup fail!"
-//            );
-//            return false;
-//        }
-//    }
-
     @Override
     public void dropTheTableData() {
         ArrayList<String> bothEmptyTable = checkBothEmptyTable();
@@ -262,9 +191,7 @@ public class BackupRepoImpl implements BackupRepo {
         ArrayList<String> secondColEmptyTable = checkSecondColEmptyTable();
         ArrayList<String> firstColEmptyTable = checkFirstColEmptyTable();
         HashMap<String, String> dateFilter = createDateFilter();
-//        boolean isBackupDatabase = backupDatabase();
 
-//        if (isBackupDatabase) {
         // is there both dates empty in the tables?
         if (!bothEmptyTable.isEmpty()) {
             for (String bothEmptyTables: bothEmptyTable) {
@@ -291,41 +218,33 @@ public class BackupRepoImpl implements BackupRepo {
 
                 HashMap<String, String> columnName = utilities.getColumnName(bothNotEmptyTables);
 
+                int getDeletedTableRowCountFromFCNSC = utilities.getDeletedTableRowCountFromFCNSC(bothNotEmptyTables, dateFilter.get("_today"), dateFilter.get("_first_day_of_year"), columnName.get("_first_col_name"), columnName.get("_second_col_name"));
+
                 boolean isDeleted = utilities.deleteDataFromTableByFCNSC(bothNotEmptyTables, dateFilter.get("_today"), dateFilter.get("_first_day_of_year"), columnName.get("_first_col_name"), columnName.get("_second_col_name"));
                 tableNameList.append(bothNotEmptyTables).append(", ");
                 tableNameListBuffer = tableNameList.substring(0, tableNameList.length() - 2);
 
                 if (isDeleted) {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted " + getDeletedTableRowCountFromFCNSC + " rows from "  + bothNotEmptyTables  + " tables!");
                     utilities.logReportFunction(
                             "delete",
-//                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
-                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted " + getDeletedTableRowCountFromFCNSC + " rows from "  + bothNotEmptyTables  + " tables!"
                     );
-
-                    alertVal += 1;
-
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted " + getDeletedTableRowCountFromFCNSC + " rows from "  + bothNotEmptyTables  + " tables!"
+                    );
                 } else {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + bothNotEmptyTables  + " tables");
                     utilities.logReportFunction(
                             "delete",
-//                            "BOTH- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
-                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + bothNotEmptyTables  + " tables"
+                    );
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + bothNotEmptyTables  + " tables"
                     );
                 }
-            }
-            if (alertVal > 0) {
-                JOptionPane.showMessageDialog(
-                        null,
-//                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
-                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
-                );
-            } else {
-                JOptionPane.showMessageDialog(
-                        null,
-//                        "BOTH2- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
-                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
-                );
             }
         }
 
@@ -339,41 +258,33 @@ public class BackupRepoImpl implements BackupRepo {
 
                 HashMap<String, String> columnName = utilities.getColumnName(secondColEmptyTables);
 
+                int getDeletedTableRowCountFromSC = utilities.getDeletedTableRowCountFromSC(secondColEmptyTables, dateFilter.get("_first_day_of_year"), columnName.get("_second_col_name"));
+
                 boolean isDeleted = utilities.deleteDataFromTableBySC(secondColEmptyTables, dateFilter.get("_today"), dateFilter.get("_first_day_of_year"), columnName.get("_second_col_name"));
                 tableNameList.append(secondColEmptyTables).append(", ");
                 tableNameListBuffer = tableNameList.substring(0, tableNameList.length() - 2);
 
                 if (isDeleted) {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted " + getDeletedTableRowCountFromSC + " rows from "  + secondColEmptyTables  + " tables!");
                     utilities.logReportFunction(
                             "delete",
-//                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
-                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted " + getDeletedTableRowCountFromSC + " rows from "  + secondColEmptyTables  + " tables!"
                     );
-
-                    alertVal += 1;
-
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted "  + getDeletedTableRowCountFromSC +" rows from "  + secondColEmptyTables  + " tables!"
+                    );
                 } else {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + secondColEmptyTables  + " tables");
                     utilities.logReportFunction(
                             "delete",
-//                            "SC- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
-                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + secondColEmptyTables  + " tables"
+                    );
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + secondColEmptyTables  + " tables!"
                     );
                 }
-            }
-            if (alertVal > 0) {
-                JOptionPane.showMessageDialog(
-                        null,
-//                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
-                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
-                );
-            } else {
-                JOptionPane.showMessageDialog(
-                        null,
-//                        "SC2- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
-                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
-                );
             }
         }
 
@@ -391,53 +302,34 @@ public class BackupRepoImpl implements BackupRepo {
                 HashMap<String, String> columnName = utilities.getColumnName(firstColEmptyTables);
                 String firstColName = columnName.get("_first_col_name");
 
+                int getDeletedTableRowCountFromFC = utilities.getDeletedTableRowCountFromFC(firstColEmptyTables, dateFilter.get("_first_day_of_year"), firstColName);
+
                 boolean isDeleted = utilities.deleteDataFromTableByFC(firstColEmptyTables, dateFilter.get("_today"), dateFilter.get("_first_day_of_year"), firstColName);
                 tableNameList.append(firstColEmptyTables).append(", ");
                 tableNameListBuffer = tableNameList.substring(0, tableNameList.length() - 2);
 
                 if (isDeleted) {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data has been deleted " + getDeletedTableRowCountFromFC + " rows from "  + firstColEmptyTables  + " tables!");
                     utilities.logReportFunction(
                             "delete",
-//                            "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
-                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted " + getDeletedTableRowCountFromFC + " rows from "  + firstColEmptyTables  + " tables!"
                     );
-
-                    alertVal += 1;
-
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted " + getDeletedTableRowCountFromFC + " rows from "  + firstColEmptyTables  + " tables!"
+                    );
                 } else {
-                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables");
+                    System.out.println("before " + dateFilter.get("_backup_time_count") + " years data not found in "  + firstColEmptyTables  + " tables");
                     utilities.logReportFunction(
                             "delete",
-//                            "FC- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
-                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + firstColEmptyTables  + " tables"
+                    );
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + firstColEmptyTables  + " tables"
                     );
                 }
             }
-            if (alertVal > 0) {
-                JOptionPane.showMessageDialog(
-                        null,
-//                        "before " + dateFilter.get("_backup_time_count") + " years data has been deleted from "  + tableNameListBuffer  + " tables!"
-                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was deleted from "  + tableNameListBuffer  + " tables!"
-                );
-            } else {
-                JOptionPane.showMessageDialog(
-                        null,
-//                        "FC2- before " + dateFilter.get("_backup_time_count") + " years data not found in "  + tableNameListBuffer  + " tables"
-                        "all data prior to  " + dateFilter.get("_first_day_of_year") + " was not found in "  + tableNameListBuffer  + " tables"
-                );
-            }
         }
-//        } else {
-//            System.out.println("ERROR : Can not delete the data from table \nREASON : Data backup did not work properly");
-//            utilities.logReportFunction(
-//                    "delete",
-//                    "ERROR : Can not delete the data from table \nREASON : Data backup did not work properly"
-//            );
-//            JOptionPane.showMessageDialog(
-//                    null,
-//                    "ERROR : Can not delete the data from table \nREASON : Data backup did not work properly"
-//            );
-//        }
     }
 }

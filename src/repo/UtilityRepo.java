@@ -26,4 +26,7 @@ public interface UtilityRepo {
     public boolean deleteDataFromTableBySC(String tableName, String today, String firstDayOfYear, String columnName);
     public boolean deleteDataFromTableByFCNSC(String tableName, String today, String firstDayOfYear, String firstColName, String secondColName);
     public ArrayList<String> getDateList(String tableName, String columnName);
+    public int getDeletedTableRowCountFromFC(String tableName, String firstDayOfYear, String columnName);
+    public int getDeletedTableRowCountFromSC(String tableName, String firstDayOfYear, String columnName);
+    public int getDeletedTableRowCountFromFCNSC(String tableName, String today, String firstDayOfYear, String firstColName, String secondColName);
 }

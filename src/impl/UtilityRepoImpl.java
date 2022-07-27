@@ -5,6 +5,7 @@ import model.Backup_Table;
 import repo.UtilityRepo;
 
 import javax.swing.*;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,19 +20,62 @@ import java.util.HashMap;
  * @ide IntelliJ IDEA
  */
 public class UtilityRepoImpl implements UtilityRepo {
-    private final String _db_username = "root";
-    private final String _db_password = "root";
-    private final String _db_host = "localhost";
-    //    private final String _db_name = "dilshan_marksys_backup";
-    private final String _db_name = "marksys_new";
 
-    Exception _exception = null;
+    //    get database stuff
+    private String _db_username = "";
+    private String _db_password = "";
+    private String _db_host = "";
+    private String _db_name = "";
+    String databaseDetails = "";
+
+    {
+        try {
+            File file = new File(System.getProperty("user.dir") + "\\" +  "database_stuff.cfg");
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuffer stringBuffer = new StringBuffer();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line);
+                stringBuffer.append("\n");
+            }
+            fileReader.close();
+            databaseDetails = stringBuffer.toString();
+
+            String dbData = databaseDetails.replaceAll("\\s+", "");
+            String[] split = dbData.split(":");
+            String dbname = "";
+            String dbhost = "";
+            String dbuser = "";
+
+            for (int i = 0; i < split.length; i++) {
+                dbname = split[1];
+                dbhost = split[2];
+                dbuser = split[3];
+            }
+
+            _db_name = dbname.split("#")[0];
+            _db_host = dbhost.split("#")[0];
+            _db_username = dbuser;
+            _db_password = new jText.TextUti().getText("dbsplit");
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Cannot read database stuff in the text file!"
+            );
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Database password incorrect!"
+            );
+        }
+    }
 
     MysqlConnector mysqlConnector = new MysqlConnector(_db_host, _db_name, _db_username, _db_password);
 
     @Override
     public void logReportFunction(String category, String description) {
-        //        need to insert oracle transaction (start transaction)
         try {
             LocalDate today = LocalDate.now(); // 2022-06-21
             Statement statement = mysqlConnector.getConnection().createStatement();
@@ -44,8 +88,6 @@ public class UtilityRepoImpl implements UtilityRepo {
                         null,
                         "Something went wrong. Data cannot update to report log!"
                 );
-            } else {
-                System.out.println("Report Data Updated!");
             }
             statement.close();
             //        need to insert oracle transaction (end transaction)
@@ -331,7 +373,7 @@ public class UtilityRepoImpl implements UtilityRepo {
                     "mysql",
                     "ERROR - table data delete fail! \n" + exception
             );
-             JOptionPane.showMessageDialog(
+            JOptionPane.showMessageDialog(
                     null,
                     "FC- ERROR - table data delete fail!"
             );
@@ -425,5 +467,92 @@ public class UtilityRepoImpl implements UtilityRepo {
             );
         }
         return dateList;
+    }
+
+    @Override
+    public int getDeletedTableRowCountFromFC(String tableName, String firstDayOfYear, String columnName) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
+        int rowCount = 0;
+
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String selectQuery = "SELECT COUNT(*) AS rowcount FROM "+tableName+" WHERE "+columnName+" < '"+firstDayOfYear+"'";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+
+            resultSet.next();
+            rowCount = resultSet.getInt("rowcount");
+
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - file path parameter fetching fail! \n" + exception
+            );
+            JOptionPane.showMessageDialog(
+                    null,
+                    "ERROR - parameter fetching fail!"
+            );
+        }
+        return rowCount;
+    }
+
+    @Override
+    public int getDeletedTableRowCountFromSC(String tableName, String firstDayOfYear, String columnName) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
+        int rowCount = 0;
+
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String selectQuery = "SELECT COUNT(*) AS rowcount FROM "+tableName+" WHERE "+columnName+" < '"+firstDayOfYear+"'";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+
+            resultSet.next();
+            rowCount = resultSet.getInt("rowcount");
+
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - file path parameter fetching fail! \n" + exception
+            );
+            JOptionPane.showMessageDialog(
+                    null,
+                    "ERROR - parameter fetching fail!"
+            );
+        }
+        return rowCount;
+    }
+
+    @Override
+    public int getDeletedTableRowCountFromFCNSC(String tableName, String today, String firstDayOfYear, String firstColName, String secondColName) {
+        UtilityRepoImpl utilities = new UtilityRepoImpl();
+        int rowCount = 0;
+
+        try {
+            Statement statement = mysqlConnector.getConnection().createStatement();
+            String selectQuery = "SELECT COUNT(*) AS rowcount FROM "+tableName+" WHERE '"+firstColName+"' < '"+firstDayOfYear+"' AND "+secondColName+" < '"+today+"'";
+            ResultSet resultSet = statement.executeQuery(selectQuery);
+
+            resultSet.next();
+            rowCount = resultSet.getInt("rowcount");
+
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException exception) {
+            utilities.logReportFunction(
+                    "mysql",
+                    "ERROR - file path parameter fetching fail! \n" + exception
+            );
+            JOptionPane.showMessageDialog(
+                    null,
+                    "ERROR - parameter fetching fail!"
+            );
+        }
+        return rowCount;
     }
 }
