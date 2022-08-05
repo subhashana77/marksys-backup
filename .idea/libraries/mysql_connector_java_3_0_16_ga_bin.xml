@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="mysql-connector-java-3.0.16-ga-bin">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../Marksys_VC_File_Transfer/MarksysVersionController/dist/lib/mysql-connector-java-3.0.16-ga-bin.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

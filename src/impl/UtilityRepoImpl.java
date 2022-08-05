@@ -26,45 +26,29 @@ public class UtilityRepoImpl implements UtilityRepo {
     private String _db_password = "";
     private String _db_host = "";
     private String _db_name = "";
-    String databaseDetails = "";
 
     {
         try {
-            File file = new File(System.getProperty("user.dir") + "\\" +  "database_stuff.cfg");
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            StringBuffer stringBuffer = new StringBuffer();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuffer.append(line);
-                stringBuffer.append("\n");
-            }
-            fileReader.close();
-            databaseDetails = stringBuffer.toString();
+            java.io.RandomAccessFile file = new java.io.RandomAccessFile(System.getProperty("user.dir") + "/rms.cfg", "r");
 
-            String dbData = databaseDetails.replaceAll("\\s+", "");
-            String[] split = dbData.split(":");
-            String dbname = "";
-            String dbhost = "";
-            String dbuser = "";
-
-            for (int i = 0; i < split.length; i++) {
-                dbname = split[1];
-                dbhost = split[2];
-                dbuser = split[3];
+             _db_name = file.readLine();
+             _db_host = file.readLine();
+             _db_username = file.readLine();
+//             _db_password = file.readLine();
+            if (_db_password.trim().equals("")) {
+                _db_password = new jText.TextUti().getText("dbsplit");
             }
 
-            _db_name = dbname.split("#")[0];
-            _db_host = dbhost.split("#")[0];
-            _db_username = dbuser;
-            _db_password = new jText.TextUti().getText("dbsplit");
+            file.close();
 
         } catch (IOException e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(
                     null,
                     "Cannot read database stuff in the text file!"
             );
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(
                     null,
                     "Database password incorrect!"
@@ -76,6 +60,7 @@ public class UtilityRepoImpl implements UtilityRepo {
 
     @Override
     public void logReportFunction(String category, String description) {
+
         try {
             LocalDate today = LocalDate.now(); // 2022-06-21
             Statement statement = mysqlConnector.getConnection().createStatement();
@@ -534,7 +519,7 @@ public class UtilityRepoImpl implements UtilityRepo {
 
         try {
             Statement statement = mysqlConnector.getConnection().createStatement();
-            String selectQuery = "SELECT COUNT(*) AS rowcount FROM "+tableName+" WHERE '"+firstColName+"' < '"+firstDayOfYear+"' AND "+secondColName+" < '"+today+"'";
+            String selectQuery = "SELECT COUNT(*) AS rowcount FROM "+tableName+" WHERE "+firstColName+" < '"+firstDayOfYear+"' AND "+secondColName+" < '"+today+"'";
             ResultSet resultSet = statement.executeQuery(selectQuery);
 
             resultSet.next();

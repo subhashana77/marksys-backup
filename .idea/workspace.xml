@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Marksys_Database_Backup:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5aa116d3-5b8f-4da8-95d5-bf07d0cf8d5e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/Marksys_Database_Backup.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/ant.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build_old.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/CopyLibs/org-netbeans-modules-java-j2seproject-copylibstask.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/java.comm.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/javacomm.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/mysql-connector-java-3.0.16-ga-bin.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/nblibraries.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nbproject/build-impl.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nbproject/genfiles.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nbproject/project.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nbproject/project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rms.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Marksys_Database_Backup_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/java_comm.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/mysql_connector_java_3_0_16_ga_bin.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Marksys_Database_Backup.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Marksys_Database_Backup.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database_stuff.cfg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Marksys_Database_Backup_jar.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Marksys_Database_Backup_jar/Marksys_Database_Backup.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Marksys_Database_Backup_jar/Marksys_Database_Backup.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Marksys_Database_Backup_jar/database_stuff.cfg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Marksys_Database_Backup/database/MysqlConnector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Marksys_Database_Backup/database/MysqlConnector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Marksys_Database_Backup/impl/UtilityRepoImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Marksys_Database_Backup/impl/UtilityRepoImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/MysqlConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/MysqlConnector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/impl/UtilityRepoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/impl/UtilityRepoImpl.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2AsKfPq7nxrUUOZbcx9Lp9lZtw7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="MAIN_CLASS_NAME" value="main.Main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5aa116d3-5b8f-4da8-95d5-bf07d0cf8d5e" name="Default Changelist" comment="" />
+      <created>1655792955681</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1655792955681</updated>
+      <workItem from="1655792962916" duration="5350000" />
+      <workItem from="1655800339977" duration="39121000" />
+      <workItem from="1656385180263" duration="603000" />
+      <workItem from="1656562449735" duration="8157000" />
+      <workItem from="1657610621922" duration="212000" />
+      <workItem from="1657610882941" duration="2019000" />
+      <workItem from="1658198171963" duration="65000" />
+      <workItem from="1658210108545" duration="55578000" />
+      <workItem from="1658401058631" duration="37620000" />
+      <workItem from="1658909021719" duration="6584000" />
+      <workItem from="1658982825635" duration="5612000" />
+      <workItem from="1658989773121" duration="6638000" />
+      <workItem from="1659001321363" duration="596000" />
+      <workItem from="1659063393852" duration="49000" />
+      <workItem from="1659416542292" duration="216000" />
+      <workItem from="1659416804416" duration="52000" />
+      <workItem from="1659417634587" duration="280000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1659417874496">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659417874496" />
+    <state x="740" y="225" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1659417832206">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="225" key="#com.intellij.ide.macro.MacrosDialog/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659417832206" />
+    <state x="689" y="310" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1659417802423">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="689" y="310" key="#com.intellij.ide.util.TreeClassChooserDialog/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659417802423" />
+    <state x="825" y="183" key="EnvironmentVariablesDialog" timestamp="1659417844643">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="825" y="183" key="EnvironmentVariablesDialog/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659417844643" />
+    <state width="1877" height="275" key="GridCell.Tab.0.bottom" timestamp="1659417916926">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="275" key="GridCell.Tab.0.bottom/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659417916926" />
+    <state width="1877" height="275" key="GridCell.Tab.0.center" timestamp="1659417916926">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="275" key="GridCell.Tab.0.center/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659417916926" />
+    <state width="1877" height="275" key="GridCell.Tab.0.left" timestamp="1659417916926">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="275" key="GridCell.Tab.0.left/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659417916926" />
+    <state width="1877" height="275" key="GridCell.Tab.0.right" timestamp="1659417916926">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="275" key="GridCell.Tab.0.right/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659417916926" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1659416854630">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="165" key="SettingsEditor/-1366.303.1366.728/0.0.1920.1040@0.0.1920.1040" timestamp="1659416854630" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/../../../software/Library/javacomm.jar!/jText/TextUti.class</url>
+          <line>58</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

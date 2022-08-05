@@ -18,7 +18,7 @@ public class MysqlConnector {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             connection = DriverManager.getConnection("jdbc:mysql://" + p_ip_address + "/" + p_db_name + "?user=" + p_db_username + "&password=" + p_db_password);
-            System.out.println("Connecting to mysql server...");
+//            System.out.println("Connecting to mysql server...");
             statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             set_dbType("MySql");
         } catch (InstantiationException | ClassNotFoundException | IllegalAccessException | SQLException exception) {
